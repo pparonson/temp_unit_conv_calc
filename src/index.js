@@ -1,17 +1,8 @@
-function component() {
-  const el = document.getElementById('app')
-  //var element = document.createElement('p');
+import initModel from "./model";
+import view from "./view";
+import update from "./update";
+import app from "./app";
 
-  const p = document.createElement("p");
-  const msg = "Hello World";
-  p.innerHTML = msg;
+const node = document.getElementById("app");
 
-  el.appendChild(p);
-
-  // const node = document.createElement("p");                 // Create a <li> node
-  // const textnode = document.createTextNode("Hello World");         // Create a text node
-  // node.appendChild(textnode);                              // Append the text to <li>
-  // document.getElementById("app").appendChild(node);
-}
-
-component();
+app(initModel, view, update, node);
