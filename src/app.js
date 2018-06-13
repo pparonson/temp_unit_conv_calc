@@ -7,6 +7,15 @@ function app(_model, _view, _update, _node) {
   let currentView = _view(model);
   let rootNode = createElement(currentView);
   _node.appendChild(rootNode);
+
+  // update
+  function dispatch(_msg) {
+    model = _update(_msg, model);
+    const updatedView = _view(model);
+    const patches = diff(currentView, updatedView);
+    rootNode = patch(rootNode, patches);
+    currentView = updatedView;
+  }
 }
 
 export default app;

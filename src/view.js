@@ -15,7 +15,7 @@ function unitOptions(_selectedUnit) {
 function unitSection(_unit, _value) {
     return div({className: "mw-50 ma1"}, [
       input({
-        className: "pa2 w-100 mv2 input-reset db dim grow ba b--black-40"
+        className: "pa2 br2 w-100 mv2 input-reset db dim grow ba b--black-40"
         , type: "text"
         , value: _value
       })
@@ -31,7 +31,12 @@ function view(_model) {
   return div({className: "mw6 center"}, [
     h1({className: "f2 pv2 bb"}, "Temperature Unit Conversion Calculator")
     // , cell(div, "pa2", 135)
-    , unitSection(UNITS[0], _model.leftValue)
+    , div({className: "flex"}, [
+      unitSection(UNITS[0], _model.leftValue)
+      , unitSection(UNITS[1], _model.rightValue)
+
+    ])
+
     // creates pre-tag for pre-formated text
     , pre( JSON.stringify(_model, null, 2) )
   ]);
