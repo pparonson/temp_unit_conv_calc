@@ -1,8 +1,8 @@
-import initModel from "./model";
-import view from "./view";
-import update from "./update";
-import app from "./app";
+import initModel from "./model"
+import view from "./view"
+import update from "./update"
+import app from "./app"
 
-const node = document.getElementById("app");
+const node = document.getElementById("app")
 
-app(initModel, view, update, node);
+app(initModel, view, update, node)
