@@ -14,14 +14,14 @@ function unitOptions(_selectedUnit) {
   , UNITS)
 }
 
-function unitSection(_unit, _value, _oninput) {
+function unitSection(_dispatch, _unit, _value, _inputMsg) {
     return div({className: "mw-50 ma1"}, [
       input({
         className: "pa2 br2 w-100 mv2 input-reset db dim grow ba b--black-40"
         , type: "text"
         , value: _value
         // oninput triggers call to update fn and passes msg and updated state
-        , oninput: _oninput
+        , oninput: e => _dispatch(_inputMsg(e.target.value))
       })
       // , div({className: "pa2 w-40 mb2 dib tc black-40"}, "=")
       , select(
@@ -36,13 +36,15 @@ function view(_dispatch, _model) {
     h1({className: "f2 pv2 bb"}, "Temperature Unit Conversion Calculator")
     , div({className: "flex"}, [
       unitSection(
-        UNITS[0]
+        _dispatch
+        , _model.leftUnit
         , _model.leftValue
-        , e => _dispatch(leftValueInputMsg(e.target.value)))
+        , leftValueInputMsg)
       , unitSection(
-        UNITS[1]
+        _dispatch
+        , _model.rightUnit
         , _model.rightValue
-        , e => _dispatch(rightValueInputMsg(e.target.value)))
+        , rightValueInputMsg)
     ])
 
     // creates pre-tag for pre-formated text
