@@ -3,6 +3,8 @@ import * as R from "ramda"
 const MSGS = {
   LEFT_VALUE_INPUT: "LEFT_VALUE_INPUT"
   , RIGHT_VALUE_INPUT: "RIGHT_VALUE_INPUT"
+  , LEFT_UNIT_CHANGE: "LEFT_UNIT_CHANGE"
+  , RIGHT_UNIT_CHANGE: "RIGHT_UNIT_CHANGE"
 }
 
 export function leftValueInputMsg(_leftValue) {
@@ -16,6 +18,20 @@ export function rightValueInputMsg(_rightValue) {
   return {
     type: MSGS.RIGHT_VALUE_INPUT
     , rightValue: _rightValue
+  }
+}
+
+export function leftUnitChangeMsg(_leftUnit) {
+  return {
+    type: MSGS.LEFT_UNIT_CHANGE
+    , leftUnit: _leftUnit
+  }
+}
+
+export function rightUnitChangeMsg(_rightUnit) {
+  return {
+    type: MSGS.RIGHT_UNIT_CHANGE
+    , rightUnit: _rightUnit
   }
 }
 
@@ -43,6 +59,12 @@ function update(_msg, _model) {
       // spread the new obj and overwrite the value
       ..._model, rightValue: _rightValue, isLeftSource: false
     }
+  }
+  if (_msg.type === "LEFT_UNIT_CHANGE") {
+    return {..._model, leftUnit: _msg.leftUnit}
+  }
+  if (_msg.type =="RIGHT_UNIT_CHANGE") {
+    return {..._model, rightUnit: _msg.rightUnit}
   }
 
   return _model
