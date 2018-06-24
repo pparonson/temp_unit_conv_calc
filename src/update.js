@@ -43,9 +43,13 @@ function update(_msg, _model) {
     }
     // return new model with updated input values
     const _leftValue = toInt(_msg.leftValue)
+    const _rightValue = convertValue(_model, _leftValue)
     return {
       // spread the new obj and overwrite the value
-      ..._model, leftValue: _leftValue, isLeftSource: true
+      ..._model
+      , rightValue: _rightValue
+      , leftValue: _leftValue
+      , isLeftSource: true
     }
   }
   if (_msg.type === "RIGHT_VALUE_INPUT") {
@@ -55,9 +59,13 @@ function update(_msg, _model) {
     }
     // return new model with updated input values
     const _rightValue = toInt(_msg.rightValue)
+    const _leftValue = convertValue(_model, _rightValue)
     return {
       // spread the new obj and overwrite the value
-      ..._model, rightValue: _rightValue, isLeftSource: false
+      ..._model
+      , leftValue: _leftValue
+      , rightValue: _rightValue
+      , isLeftSource: false
     }
   }
   if (_msg.type === "LEFT_UNIT_CHANGE") {
@@ -74,6 +82,117 @@ function update(_msg, _model) {
 const toInt = R.compose(
   R.defaultTo(0)
   , parseInt
+)
+
+function convertValue(_model, _value) {
+  const {leftUnit, rightUnit, isLeftSource} = _model
+  if (isLeftSource) {
+    if (leftUnit === "Celcius" && rightUnit === "Celcius") {
+      // return {..._model, rightValue: _value}
+      return _value
+    }
+    if (leftUnit === "Celcius" && rightUnit === "Fahrenheit") {
+      // return {..._model, rightValue: convCelciusToFahrenheit(_value)}
+      return convCelciusToFahrenheit(_value)
+    }
+    if (leftUnit === "Celcius" && rightUnit === "Kelvin") {
+      // return {..._model, rightValue: convCelciusToKelvin(_value)}
+      return convCelciusToKelvin(_value)
+    }
+
+    if (leftUnit === "Fahrenheit" && rightUnit === "Celcius") {
+      // return {..._model, rightValue: convFahrenheitToCelcius(_value)}
+      return convFahrenheitToCelcius(_value)
+    }
+    if (leftUnit === "Fahrenheit" && rightUnit === "Fahrenheit") {
+      // return {..._model, rightValue: _value}
+      return _value
+    }
+    if (leftUnit === "Fahrenheit" && rightUnit === "Kelvin") {
+      // return {..._model, rightValue: convFahrenheitToKelvin(_value)}
+      return convFahrenheitToKelvin(_value)
+    }
+
+    if (leftUnit === "Kelvin" && rightUnit === "Celcius") {
+      // return {..._model, rightValue: convKelvinToCelcius(_value)}
+      return convKelvinToCelcius(_value)
+    }
+    if (leftUnit === "Kelvin" && rightUnit === "Fahrenheit") {
+      // return {..._model, rightValue: convKelvinToFahrenheit(_value)}
+      convKelvinToFahrenheit(_value)
+    }
+    if (leftUnit === "Kelvin" && rightUnit === "Kelvin") {
+      // return {..._model, rightValue: _value}
+      return _value
+    }
+  } else {
+    if (leftUnit === "Celcius" && rightUnit === "Celcius") {
+      // return {..._model, rightValue: _value}
+      return _value
+    }
+    if (leftUnit === "Celcius" && rightUnit === "Fahrenheit") {
+      // return {..._model, rightValue: convCelciusToFahrenheit(_value)}
+      return convFahrenheitToCelcius(_value)
+    }
+    if (leftUnit === "Celcius" && rightUnit === "Kelvin") {
+      // return {..._model, rightValue: convCelciusToKelvin(_value)}
+      return convKelvinToCelcius(_value)
+    }
+
+    if (leftUnit === "Fahrenheit" && rightUnit === "Celcius") {
+      // return {..._model, rightValue: convFahrenheitToCelcius(_value)}
+      return convCelciusToFahrenheit(_value)
+    }
+    if (leftUnit === "Fahrenheit" && rightUnit === "Fahrenheit") {
+      // return {..._model, rightValue: _value}
+      return _value
+    }
+    if (leftUnit === "Fahrenheit" && rightUnit === "Kelvin") {
+      // return {..._model, rightValue: convFahrenheitToKelvin(_value)}
+      return convKelvinToFahrenheit(_value)
+    }
+
+    if (leftUnit === "Kelvin" && rightUnit === "Celcius") {
+      // return {..._model, rightValue: convKelvinToCelcius(_value)}
+      return convCelciusToKelvin(_value)
+    }
+    if (leftUnit === "Kelvin" && rightUnit === "Fahrenheit") {
+      // return {..._model, rightValue: convKelvinToFahrenheit(_value)}
+      return convFahrenheitToKelvin(_value)
+    }
+    if (leftUnit === "Kelvin" && rightUnit === "Kelvin") {
+      // return {..._model, rightValue: _value}
+      return _value
+    }
+  }
+}
+
+function convCelciusToFahrenheit(_value) {
+  return ((9/5) * _value) + 32
+}
+
+function convCelciusToKelvin(_value) {
+  return _value - 273.15
+}
+
+function convFahrenheitToCelcius(_value) {
+  return (5/9) * (_value - 32)
+}
+
+// point-free notation, _value
+const convFahrenheitToKelvin = R.compose(
+  convCelciusToKelvin
+  , convFahrenheitToCelcius
+)
+
+function convKelvinToCelcius(_value) {
+  return _value + 273.15
+}
+
+// point-free, _value
+const convKelvinToFahrenheit = R.compose(
+  convCelciusToFahrenheit
+  , convKelvinToCelcius
 )
 
 export default update
