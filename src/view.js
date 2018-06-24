@@ -63,7 +63,4 @@ function view(_dispatch, _model) {
   ])
 }
 
-// helpers
-
-
 export default view
